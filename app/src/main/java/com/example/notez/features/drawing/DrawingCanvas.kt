@@ -31,10 +31,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.draganddrop.dragAndDropTarget
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -83,6 +85,11 @@ import com.example.notez.core.ui.FocusedFieldEnum
 import com.example.notez.core.ui.theme.NotezAppTheme
 import com.example.notez.core.ui.NotezTextureBitmapStore
 import com.example.notez.core.utils.createDropTarget
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.res.painterResource
 import com.example.notez.features.drawing.viewmodel.DrawingCanvasViewModel
 
 
@@ -136,7 +143,7 @@ fun DrawingCanvas(
             .navigationBarsPadding()
             .imePadding()
     ) {
-        DrawingCanvasTopBar(drawingCanvasViewModel)
+        DrawingCanvasTopBar(drawingCanvasViewModel, navigateUp)
         DrawingCanvasContent(
             drawingCanvasViewModel = drawingCanvasViewModel,
             imagePickerLauncher = imagePickerLauncher,
@@ -148,6 +155,7 @@ fun DrawingCanvas(
 @Composable
 private fun DrawingCanvasTopBar(
     drawingCanvasViewModel: DrawingCanvasViewModel,
+    onNavigateUp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val uiState by drawingCanvasViewModel.uiState.collectAsStateWithLifecycle()
@@ -163,10 +171,26 @@ private fun DrawingCanvasTopBar(
         }
     }
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-    ) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = stringResource(R.string.drawing),
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+            IconButton(onClick = onNavigateUp) {
+                Icon(
+                    painter = painterResource(R.drawable.close_24px),
+                    contentDescription = stringResource(R.string.navigate_up)
+                )
+            }
+        }
         TextField(
             value = titleState,
             onValueChange = { newTitle ->
@@ -175,7 +199,8 @@ private fun DrawingCanvasTopBar(
             },
             placeholder = { Text(text = stringResource(R.string.drawing_title)) },
             modifier = Modifier
-                .weight(1f)
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
                 .focusRequester(titleFocusRequester)
                 .onFocusChanged { focusState ->
                     if (focusState.isFocused) {
@@ -184,7 +209,8 @@ private fun DrawingCanvasTopBar(
                 },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { })
+            keyboardActions = KeyboardActions(onDone = { }),
+            textStyle = MaterialTheme.typography.titleLarge
         )
     }
 }

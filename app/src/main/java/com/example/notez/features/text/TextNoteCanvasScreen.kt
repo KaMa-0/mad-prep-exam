@@ -32,6 +32,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.draganddrop.dragAndDropSource
 import androidx.compose.foundation.draganddrop.dragAndDropTarget
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -80,6 +81,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import com.example.notez.R
 import com.example.notez.core.data.Note
 import com.example.notez.core.ui.theme.NotezAppTheme
@@ -250,18 +253,57 @@ private fun NoteCanvasTopBar(
 ) {
     var optionsMenuExpanded by rememberSaveable { mutableStateOf(false) }
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = stringResource(R.string.note),
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+            Row {
+                Box {
+                    IconButton(onClick = { optionsMenuExpanded = true }) {
+                        Icon(
+                            painter = painterResource(R.drawable.menu_24px),
+                            contentDescription = stringResource(R.string.more_options)
+                        )
+                    }
+                    NoteCanvasDropdownMenu(
+                        expanded = optionsMenuExpanded,
+                        onDismissRequest = { optionsMenuExpanded = false },
+                        onUploadImage = {
+                            imagePickerLauncher.launch(
+                                PickVisualMediaRequest(
+                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
+                            )
+                        },
+                        isFavorite = isFavorite,
+                        onToggleFavorite = onToggleFavorite,
+                        onExit = onExit
+                    )
+                }
+                IconButton(onClick = onExit) {
+                    Icon(
+                        painter = painterResource(R.drawable.close_24px),
+                        contentDescription = stringResource(R.string.navigate_up)
+                    )
+                }
+            }
+        }
         TextField(
             value = titleState,
             onValueChange = onTitleChange,
             placeholder = { Text(stringResource(R.string.title)) },
             modifier = Modifier
-                .weight(1f)
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
                 .focusRequester(titleFocusRequester)
                 .onFocusChanged(onTitleFocusChanged),
             keyboardOptions = KeyboardOptions(
@@ -270,29 +312,6 @@ private fun NoteCanvasTopBar(
             ),
             textStyle = MaterialTheme.typography.titleLarge
         )
-
-        Box {
-            IconButton(onClick = { optionsMenuExpanded = true }) {
-                Icon(
-                    painter = painterResource(R.drawable.menu_24px),
-                    contentDescription = stringResource(R.string.more_options)
-                )
-            }
-            NoteCanvasDropdownMenu(
-                expanded = optionsMenuExpanded,
-                onDismissRequest = { optionsMenuExpanded = false },
-                onUploadImage = {
-                    imagePickerLauncher.launch(
-                        PickVisualMediaRequest(
-                            ActivityResultContracts.PickVisualMedia.ImageOnly
-                        )
-                    )
-                },
-                isFavorite = isFavorite,
-                onToggleFavorite = onToggleFavorite,
-                onExit = onExit
-            )
-        }
     }
 }
 

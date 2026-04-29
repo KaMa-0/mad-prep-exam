@@ -329,8 +329,7 @@ private fun ListPaneContent(
     onDeleteNote: (Note) -> Unit,
     onNewWindow: (Note) -> Unit,
 ) {
-    val favorites = emptyList<Note>()
-    val others = noteList
+    val (favorites, others) = noteList.partition { it.isFavorite }
 
     NoteList(
         favorites = favorites,

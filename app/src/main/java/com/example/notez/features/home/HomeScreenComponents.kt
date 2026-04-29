@@ -110,7 +110,7 @@ fun NoteList(
                     }
                 )
             },
-            modifier = Modifier
+            modifier = Modifier.fillMaxSize()
         ) { innerPadding ->
             NoteListContent(
                 favorites = favorites,
@@ -121,7 +121,9 @@ fun NoteList(
                 onDeleteNote = onDeleteNote,
                 onToggleFavorite = onToggleFavorite,
                 onNewWindow = onNewWindow,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
             )
         }
     }
@@ -139,19 +141,21 @@ private fun NoteListContent(
     onNewWindow: (Note) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
 
         if (favorites.isNotEmpty()) {
-            Text(
-                text = stringResource(R.string.favorites),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-            )
+            item {
+                Text(
+                    text = stringResource(R.string.favorites),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+            }
 
-            favorites.forEach { note ->
+            items(favorites, key = { it.id }) { note ->
                 NoteItem(
                     note = note,
                     isCompact = isCompact,
@@ -165,15 +169,17 @@ private fun NoteListContent(
         }
 
         if (otherNotes.isNotEmpty()) {
-            AnimatedVisibility(favorites.isNotEmpty()) {
-                Text(
-                    text = stringResource(R.string.other_notes),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
+            item {
+                AnimatedVisibility(favorites.isNotEmpty()) {
+                    Text(
+                        text = stringResource(R.string.other_notes),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
             }
 
-            otherNotes.forEach { note ->
+            items(otherNotes, key = { it.id }) { note ->
                 NoteItem(
                     note = note,
                     isCompact = isCompact,

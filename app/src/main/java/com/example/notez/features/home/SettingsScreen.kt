@@ -60,7 +60,7 @@ fun SettingsScreen(
     val context = LocalContext.current
     val activity = context as MainActivity
 
-    val isDebugMode = activity.intent.extras!!.getBoolean("debug_mode")
+    val isDebugMode = activity.intent.getBooleanExtra("debug_mode", false)
 
     val isRoleAvailable by viewModel.isRoleAvailable.collectAsStateWithLifecycle()
     val isRoleHeld by viewModel.isRoleHeld.collectAsStateWithLifecycle()

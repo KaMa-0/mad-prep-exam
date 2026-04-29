@@ -36,3 +36,12 @@ val MIGRATION_8_9 = object : Migration(8, 9) {
         )
     }
 }
+
+val MIGRATION_9_10 = object : Migration(9, 10) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE notes ADD COLUMN created_at INTEGER NOT NULL DEFAULT 0")
+        db.execSQL("ALTER TABLE notes ADD COLUMN updated_at INTEGER NOT NULL DEFAULT 0")
+        val currentTime = System.currentTimeMillis()
+        db.execSQL("UPDATE notes SET created_at = $currentTime, updated_at = $currentTime")
+    }
+}

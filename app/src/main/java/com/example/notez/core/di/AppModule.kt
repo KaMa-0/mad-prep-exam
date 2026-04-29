@@ -23,6 +23,7 @@ import androidx.room.Room
 import coil3.ImageLoader
 import com.example.notez.core.data.MIGRATION_7_8
 import com.example.notez.core.data.MIGRATION_8_9
+import com.example.notez.core.data.MIGRATION_9_10
 import com.example.notez.core.data.NoteDatabase
 import com.example.notez.core.data.NotesRepository
 import com.example.notez.core.data.OfflineNotesRepository
@@ -47,7 +48,7 @@ object AppModule {
             NoteDatabase::class.java,
             NoteDatabase.DATABASE_NAME
         )
-            .addMigrations(MIGRATION_7_8, MIGRATION_8_9)
+            .addMigrations(MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10)
             .build()
     }
 

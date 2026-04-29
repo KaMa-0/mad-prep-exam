@@ -40,7 +40,7 @@ class OfflineNotesRepository(
         return notesDao.addNote(note)
     }
 
-    override suspend fun updateNote(note: Note) = notesDao.updateNote(note)
+    override suspend fun updateNote(note: Note) = notesDao.updateNote(note.copy(updatedAt = System.currentTimeMillis()))
 
     override suspend fun updateNoteStrokes(
         noteId: Long,
@@ -54,7 +54,11 @@ class OfflineNotesRepository(
         val note = notesDao.getNoteById(noteId)
         if (note != null) {
             val updatedNote =
-                note.copy(strokesData = strokesJson, clientBrushFamilyId = clientBrushFamilyId)
+                note.copy(
+                    strokesData = strokesJson,
+                    clientBrushFamilyId = clientBrushFamilyId,
+                    updatedAt = System.currentTimeMillis()
+                )
             notesDao.updateNote(updatedNote)
         }
     }
@@ -71,7 +75,7 @@ class OfflineNotesRepository(
     override suspend fun toggleFavorite(noteId: Long) {
         val note = notesDao.getNoteById(noteId)
         if (note != null) {
-            val updatedNote = note.copy(isFavorite = !note.isFavorite)
+            val updatedNote = note.copy(isFavorite = !note.isFavorite, updatedAt = System.currentTimeMillis())
             notesDao.updateNote(updatedNote)
         }
     }
@@ -79,7 +83,7 @@ class OfflineNotesRepository(
     override suspend fun updateNoteImageUriList(noteId: Long, imageUriList: List<String>?) {
         val note = notesDao.getNoteById(noteId)
         if (note != null) {
-            val updatedNote = note.copy(imageUriList = imageUriList)
+            val updatedNote = note.copy(imageUriList = imageUriList, updatedAt = System.currentTimeMillis())
             notesDao.updateNote(updatedNote)
         }
     }

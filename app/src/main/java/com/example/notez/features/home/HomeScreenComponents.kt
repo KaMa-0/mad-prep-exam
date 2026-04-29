@@ -72,6 +72,9 @@ import androidx.compose.ui.unit.dp
 import androidx.ink.strokes.Stroke
 import coil3.compose.AsyncImage
 import com.example.notez.R
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import com.example.notez.core.data.Note
 import com.example.notez.core.data.NoteType
 import com.example.notez.core.ui.theme.NotezAppTheme
@@ -228,15 +231,30 @@ private fun NoteItemContent(
     note: Note,
     modifier: Modifier = Modifier
 ) {
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault())
+    val dateString = dateFormat.format(Date(note.updatedAt))
+
     Column(modifier = modifier) {
-        Text(
-            text = note.title.ifBlank { stringResource(R.string.untitled_note) },
-            style = MaterialTheme.typography.titleMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        )
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = note.title.ifBlank { stringResource(R.string.untitled_note) },
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .align(Alignment.CenterStart)
+            )
+
+            Text(
+                text = dateString,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .align(Alignment.TopEnd)
+            )
+        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,

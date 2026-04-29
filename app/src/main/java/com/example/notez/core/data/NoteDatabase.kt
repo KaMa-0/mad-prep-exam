@@ -27,7 +27,7 @@ import com.example.notez.developer.brushdesigner.data.CustomBrushEntity
 
 @Database(
     entities = [Note::class, CustomBrushEntity::class],
-    version = 9,
+    version = 10,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

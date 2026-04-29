@@ -45,6 +45,10 @@ data class Note(
     val imageUriList: List<String>? = emptyList(),
     @ColumnInfo(name = "client_brush_family_id")
     val clientBrushFamilyId: String? = null,
+    @ColumnInfo(name = "created_at")
+    val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "updated_at")
+    val updatedAt: Long = System.currentTimeMillis(),
 ) : Parcelable
 
 enum class NoteType {

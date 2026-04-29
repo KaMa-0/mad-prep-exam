@@ -61,4 +61,9 @@ interface NotesRepository {
      * Updates the image URI list of a note.
      */
     suspend fun updateNoteImageUriList(noteId: Long, imageUriList: List<String>?)
+
+    /**
+     * Delete note from the data source
+     */
+    suspend fun deleteNote(note: Note)
 }

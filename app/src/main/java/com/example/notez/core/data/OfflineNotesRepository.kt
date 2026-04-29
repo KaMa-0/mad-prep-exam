@@ -88,4 +88,8 @@ class OfflineNotesRepository(
         }
     }
 
+    override suspend fun deleteNote(note: Note) {
+        notesDao.deleteNote(note)
+    }
+
 }

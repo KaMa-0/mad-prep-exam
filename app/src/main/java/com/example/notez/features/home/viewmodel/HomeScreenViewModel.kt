@@ -134,7 +134,7 @@ class HomeScreenViewModel @Inject constructor(
     fun deleteNote(noteToDelete: Note) {
         try {
             viewModelScope.launch {
-                // TODO add delete note functionality
+                noteRepository.deleteNote(noteToDelete)
                 if (_uiState.value.note.id == noteToDelete.id) {
                     clearSelection()
                 }

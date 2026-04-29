@@ -37,6 +37,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -393,6 +395,7 @@ private fun NoteCanvasBody(
                     modifier =
                         Modifier
                             .fillMaxWidth()
+                            .height(250.dp)
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                             .focusRequester(bodyFocusRequester)
                             .onFocusChanged(onBodyFocusChanged),
